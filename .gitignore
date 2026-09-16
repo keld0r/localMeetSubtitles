@@ -1,0 +1,16 @@
+# Binarios y compilados
+build/
+*.o
+*.dylib
+
+# Modelos GGML de Whisper (se descargan con download_model.sh)
+models/*.bin
+
+# Archivos temporales de audio y transcripciones
+*.wav
+*.aiff
+*.json
+
+# macOS
+.DS_Store
+.Trashes
