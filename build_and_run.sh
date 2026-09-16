@@ -9,12 +9,32 @@ echo "  LocalMeetSubtitles - Compilador y Lanzador macOS"
 echo "  100% Localhost • Sin Nube • Confidencial • Apple Silicon"
 echo "=========================================================="
 
-# 1. Comprobar modelo Whisper
-if [ ! -f "$DIR/models/ggml-base.bin" ]; then
-    echo "[1/3] Descargando modelo base de Whisper..."
-    ./download_model.sh base
+# 0. Comprobar dependencias del sistema
+if ! command -v swiftc &> /dev/null; then
+    echo "✗ Error: No se encontró el compilador 'swiftc'."
+    echo "  Por favor instala las herramientas de Xcode ejecutando:"
+    echo "  xcode-select --install"
+    exit 1
+fi
+
+if ! command -v whisper-cli &> /dev/null && [ ! -f "/opt/homebrew/bin/whisper-cli" ] && [ ! -f "/opt/homebrew/opt/whisper-cpp/bin/whisper-cli" ]; then
+    echo "✗ Error: No se encontró 'whisper-cli'."
+    echo "  En tu nuevo Mac puedes instalarlo fácilmente con Homebrew:"
+    echo "  brew install whisper-cpp"
+    exit 1
+fi
+
+# 1. Comprobar modelos Whisper
+if [ ! -f "$DIR/models/ggml-tiny.bin" ]; then
+    echo "[1/3] Descargando modelo ultra-rápido Whisper Tiny..."
+    ./download_model.sh tiny
 else
-    echo "[1/3] ✓ Modelo Whisper base verificado (141 MB)"
+    echo "[1/3] ✓ Modelo Whisper Tiny verificado (74 MB)"
+fi
+
+if [ ! -f "$DIR/models/ggml-base.bin" ]; then
+    echo "[1/3] Descargando modelo Whisper Base..."
+    ./download_model.sh base
 fi
 
 # 2. Compilar aplicación Swift

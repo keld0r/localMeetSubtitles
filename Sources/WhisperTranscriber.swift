@@ -32,8 +32,22 @@ public class WhisperTranscriber: ObservableObject {
     @Published public var selectedModel: String = "base"
     @Published public var targetLanguage: String = "auto"
     
+    public static func findWhisperCli() -> String {
+        let candidates = [
+            "/opt/homebrew/bin/whisper-cli",
+            "/opt/homebrew/opt/whisper-cpp/bin/whisper-cli",
+            "/usr/local/bin/whisper-cli"
+        ]
+        for path in candidates {
+            if FileManager.default.fileExists(atPath: path) {
+                return path
+            }
+        }
+        return "/opt/homebrew/bin/whisper-cli"
+    }
+    
     public init(
-        whisperCliPath: String = "/opt/homebrew/opt/whisper-cpp/bin/whisper-cli",
+        whisperCliPath: String = WhisperTranscriber.findWhisperCli(),
         modelPath: String = "models/ggml-base.bin"
     ) {
         self.whisperCliPath = whisperCliPath
