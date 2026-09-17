@@ -45,7 +45,7 @@ public class SubtitleCoordinator: ObservableObject, AudioCaptureDelegate {
     @Published public var overlayOpacity: Double = 0.88
     @Published public var showOriginalWhenTranslated: Bool = true
     // Performance Settings
-    @Published public var selectedModel: String = "tiny" // default to tiny for instant sub-second response!
+    @Published public var selectedModel: String = "small" // default to small for robust Portuguese comprehension
     @Published public var selectedLanguageMode: String = "auto" // "auto", "pt", "es"
     
     public let audioManager: AudioCaptureManager
@@ -61,8 +61,8 @@ public class SubtitleCoordinator: ObservableObject, AudioCaptureDelegate {
         self.translator = LocalTranslator()
         
         self.audioManager.delegate = self
-        self.whisper.setModel("tiny")
-        self.selectedModel = "tiny"
+        self.whisper.setModel("small")
+        self.selectedModel = "small"
     }
     
     public func setModel(_ model: String) {

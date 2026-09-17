@@ -47,20 +47,29 @@ Al ejecutar la aplicación por primera vez, macOS solicitará:
 
 ---
 
-## ⚡ Modos de Velocidad y Ajuste de Latencia
+## ⚡ Modelos de Precisión y Velocidad
 
-En la barra de herramientas de la ventana flotante tienes dos controles clave para ajustar la velocidad:
+En la barra de herramientas de la ventana flotante puedes alternar entre 4 modelos según la dificultad de la reunión:
 
-1. **Selector de Modelo (`⚡ Tiny` vs `⚖️ Base`)**:
-   - `⚡ Ultra-Rápido (Tiny • ~70ms)`: Ideal para videollamadas fluidas en tiempo real. Reduce a la mitad el tiempo de procesamiento con excelente comprensión de portugués y español coloquial.
-   - `⚖️ Equilibrado (Base • ~140ms)`: Mayor vocabulario técnico y jerga especializada.
+1. **`🎯 Small (Recomendado PT-BR • ~150ms)`** (465 MB):
+   - **3.3x más grande que Base** (244M parámetros).
+   - Diseñado específicamente para conversaciones reales en portugués de Brasil.
+   - Entiende contracciones rápidas (*"pra gente"*, *"tá"*, *"cê"*, *"fechá"*) y modismos empresariales.
+2. **`🏆 Large-v3-Turbo (Máxima Precisión • ~220ms)`** (1.6 GB):
+   - **11x más grande que Base** (809M parámetros).
+   - El modelo más avanzado de OpenAI con decoder Turbo de 4 capas.
+   - Excelente para personas que hablan muy rápido, con acentos cerrados o sin modular.
+3. **`⚖️ Base (Rápido • ~100ms)`** (141 MB):
+   - Modelo intermedio para hardware más ajustado.
+4. **`⚡ Tiny (Ultra-Rápido • ~70ms)`** (74 MB):
+   - Para máxima velocidad cuando la pronunciación es clara y pausada.
 
-2. **Selector de Idioma (`🌐 Auto` vs `🇧🇷 Solo PT` vs `🇨🇱 Solo ES`)**:
-   - `🇧🇷 Solo Portugués`: Al fijar el idioma en Portugués, Whisper se salta la evaluación de los 99 idiomas soportados, **reduciendo el tiempo de respuesta en un 50% adicional**.
-   - `🌐 Auto`: Detecta dinámicamente si habla un chileno o un brasileño.
+### 🇧🇷 Contextual Prompting (Sesgo Inteligente PT-BR)
+La app inyecta automáticamente un contexto previo en portugués brasileño (*"Reunião de negócios, alinhamento, prazos, orçamento, tá, pra gente, cê, beleza, combinado..."*), sesgando los pesos del modelo para que reconozca contracciones y jerga sin alucinaciones.
 
-3. **VAD (Voice Activity Detection) Ultrarrápido**:
-   - Se redujo la ventana de silencio a 250ms (antes 500ms), lo que hace que los subtítulos se disparen 250ms antes en cuanto el participante hace una pausa natural al hablar.
+### ⏱️ VAD Calibrado para Habla Rápida
+- **350ms de silencio** (evita cortar palabras a la mitad en pausas cortas).
+- **1.2s de audio mínimo** (le entrega al transformador contexto suficiente para deducir palabras poco articuladas).
 
 ---
 

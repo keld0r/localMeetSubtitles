@@ -25,16 +25,21 @@ if ! command -v whisper-cli &> /dev/null && [ ! -f "/opt/homebrew/bin/whisper-cl
 fi
 
 # 1. Comprobar modelos Whisper
-if [ ! -f "$DIR/models/ggml-tiny.bin" ]; then
-    echo "[1/3] Descargando modelo ultra-rápido Whisper Tiny..."
-    ./download_model.sh tiny
+if [ ! -f "$DIR/models/ggml-small.bin" ]; then
+    echo "[1/3] Descargando modelo recomendado Whisper Small..."
+    ./download_model.sh small
 else
-    echo "[1/3] ✓ Modelo Whisper Tiny verificado (74 MB)"
+    echo "[1/3] ✓ Modelo Whisper Small (Recomendado) verificado (465 MB)"
 fi
 
 if [ ! -f "$DIR/models/ggml-base.bin" ]; then
     echo "[1/3] Descargando modelo Whisper Base..."
     ./download_model.sh base
+fi
+
+if [ ! -f "$DIR/models/ggml-tiny.bin" ]; then
+    echo "[1/3] Descargando modelo Whisper Tiny..."
+    ./download_model.sh tiny
 fi
 
 # 2. Compilar aplicación Swift

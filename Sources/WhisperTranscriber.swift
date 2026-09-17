@@ -70,6 +70,8 @@ public class WhisperTranscriber: ObservableObject {
         }
     }
     
+    public var initialPrompt: String = "Reunião de trabalho e negócios. Conversa em português do Brasil com contrações comuns como tá, pra gente, cê, beleza, combinado, valeu, fechado, orçamento, prazos, desenvolvimento, projeto. Español chileno fluido."
+    
     public func transcribe(wavURL: URL) async -> TranscriptionResult? {
         let startTime = CFAbsoluteTimeGetCurrent()
         let outputBase = wavURL.deletingPathExtension().path + "_out"
@@ -78,17 +80,22 @@ public class WhisperTranscriber: ObservableObject {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: whisperCliPath)
         
+        // Dynamic beam search: 2 beams for small/large for robust error correction, 1 for tiny/base for raw speed
+        let beamSize = (selectedModel == "small" || selectedModel.contains("large")) ? "2" : "1"
+        
         // Optimized arguments:
-        // -bs 1 -bo 1: Greedy decoding (cuts 50%+ decoding time vs beam search)
+        // -bs / -bo: Adaptive beam search
         // -t 6: Utilize M1 Max performance cores
-        // -l <targetLanguage>: Auto or direct hint (direct hint cuts latency by half!)
+        // -l <targetLanguage>: Auto or direct hint
+        // --prompt: Conditions the decoder on colloquial PT-BR meeting speech
         process.arguments = [
             "-m", modelPath,
             "-f", wavURL.path,
             "-l", targetLanguage,
-            "-bs", "1",
-            "-bo", "1",
+            "-bs", beamSize,
+            "-bo", beamSize,
             "-t", "6",
+            "--prompt", initialPrompt,
             "-oj",
             "-of", outputBase,
             "-nt",

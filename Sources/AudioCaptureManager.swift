@@ -33,12 +33,12 @@ public class AudioCaptureManager: NSObject, ObservableObject, SCStreamOutput, SC
     private var sampleBuffer: [Int16] = []
     private let bufferLock = NSLock()
     
-    // VAD settings - tuned for low-latency live subtitles
+    // VAD settings - calibrated for natural speech context and fast Portuguese
     private var isSpeaking = false
     private var silenceFramesCount = 0
-    private let minSpeechFrames = 16000 * 5 / 10 // 0.5s minimum speech
-    private let maxSpeechFrames = 16000 * 22 / 10 // 2.2s maximum speech window
-    private let silenceFramesThreshold = 16000 * 25 / 100 // 0.25s silence triggers immediate segmentation
+    private let minSpeechFrames = 16000 * 12 / 10 // 1.2s minimum speech for full phonetic context
+    private let maxSpeechFrames = 16000 * 30 / 10 // 3.0s maximum speech window
+    private let silenceFramesThreshold = 16000 * 35 / 100 // 0.35s silence prevents mid-word cuts
     private let silenceEnergyThreshold: Float = 0.015
     
     private var tempDir: URL {

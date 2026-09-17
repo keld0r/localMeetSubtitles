@@ -108,17 +108,23 @@ public struct ContentView: View {
             
             // Speed & Model Selector
             Menu {
-                Button("⚡ Ultra-Rápido (Tiny • ~70ms)") {
-                    coordinator.setModel("tiny")
+                Button("🎯 Small (Recomendado PT-BR • ~150ms)") {
+                    coordinator.setModel("small")
                 }
-                Button("⚖️ Equilibrado (Base • ~140ms)") {
+                Button("🏆 Large-v3-Turbo (Máx. Precisión • ~220ms)") {
+                    coordinator.setModel("large-v3-turbo")
+                }
+                Button("⚖️ Base (Rápido • ~100ms)") {
                     coordinator.setModel("base")
+                }
+                Button("⚡ Tiny (Ultra-Rápido • ~70ms)") {
+                    coordinator.setModel("tiny")
                 }
             } label: {
                 HStack(spacing: 4) {
-                    Image(systemName: "bolt.fill")
-                        .foregroundColor(coordinator.selectedModel == "tiny" ? .yellow : .cyan)
-                    Text(coordinator.selectedModel == "tiny" ? "⚡ Tiny (~70ms)" : "⚖️ Base")
+                    Image(systemName: coordinator.selectedModel == "large-v3-turbo" ? "trophy.fill" : (coordinator.selectedModel == "small" ? "target" : "bolt.fill"))
+                        .foregroundColor(coordinator.selectedModel == "small" ? .green : (coordinator.selectedModel == "large-v3-turbo" ? .yellow : .cyan))
+                    Text(modelDisplayName(coordinator.selectedModel))
                         .font(.system(size: 12, weight: .medium))
                 }
                 .padding(.horizontal, 8)
@@ -127,7 +133,7 @@ public struct ContentView: View {
                 .cornerRadius(6)
             }
             .menuStyle(.borderlessButton)
-            .help("Selecciona el modelo: Tiny es el más veloz (sub-100ms), Base tiene mayor vocabulario.")
+            .help("Small es el recomendado para portugués rápido; Large-v3-Turbo ofrece máxima precisión para acentos difíciles.")
             
             // Language Mode Selector
             Menu {
@@ -323,6 +329,16 @@ public struct ContentView: View {
             .padding(.horizontal, 14)
         }
         .frame(maxHeight: 180)
+    }
+    
+    private func modelDisplayName(_ model: String) -> String {
+        switch model {
+        case "small": return "🎯 Small"
+        case "large-v3-turbo": return "🏆 Large-Turbo"
+        case "base": return "⚖️ Base"
+        case "tiny": return "⚡ Tiny"
+        default: return model.uppercased()
+        }
     }
 }
 
